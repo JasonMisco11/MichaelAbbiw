@@ -43,45 +43,40 @@ const links = [
     description:
       "Governance, strategy, risk management, and organizational transformation.",
     image:
-      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=500&auto=format&fit=crop&q=60",
-    url: "https://mgaconsultingltd.com/",
+      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694568/7da8de98-fa8f-40a6-8c61-8623209756f8_pgwkxa.png",
   },
   {
     title: "MGA Prime Properties",
     description:
       "Premium real estate development and property management solutions.",
     image:
-      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=500&auto=format&fit=crop&q=60",
-    url: "https://mgaprimeproperties.com/",
+      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694568/75bdfdc3-caf2-48d2-b52a-79592570deb2_ntfild.png",
   },
   {
     title: "Innosol Limited",
     description: "Innovative business and technology solutions.",
     image:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=60",
-    url: "https://innosollimited.com/",
+      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694568/4a481e1d-7394-4d62-9ed9-bff007f4b9dd_rrilfx.png",
   },
   {
     title: "STIB Ghana",
     description:
       "Advancing professional standards and institutional excellence.",
     image:
-      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&auto=format&fit=crop&q=60",
-    url: "https://stibghana.com/about/",
+      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694567/3431a504-0e73-4455-a6ed-a85dcc13985f_exzfyj.png",
   },
   {
     title: "JKA Logistics Limited",
     description: "End-to-End Logistics & Supply Chain Solutions.",
     image:
-      "https://images.unsplash.com/photo-1586528116311-ad8c7bd7e8b4?w=500&auto=format&fit=crop&q=60",
+      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694567/920666c9-2d1e-4c13-acb0-78506cc8aaaf_qwhtjs.png",
     url: "#",
   },
   {
     title: "CorEvents Solutions Ltd",
     description: "Corporate event planning and management solutions.",
     image:
-      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=500&auto=format&fit=crop&q=60",
-    url: "https://coreventssolutionsltd.com/",
+      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694568/6d3da7a3-f04d-49c4-953a-799fda233052_ma5elj.png",
   },
 ];
 
@@ -344,7 +339,7 @@ END:VCARD`;
 
             <div className="relative">
               <div className="flex items-center justify-between mb-4 cursor-pointer group">
-                <h3 className="font-bold text-black text-lg">My Companies</h3>
+                <h3 className="font-bold text-black text-lg">Companies</h3>
                 <ChevronRight
                   size={20}
                   className="text-neutral-400 group-hover:translate-x-1 transition-transform"
