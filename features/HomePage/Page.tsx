@@ -97,6 +97,7 @@ export const links = [
       "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694567/e135cefe-8357-456a-97f9-2bb5a77314e9_vdnkg8.png",
       "f_auto,q_auto,w_400",
     ),
+    url: "https://mgaconsultingltd.com/mga-consultinigeria/",
   },
 
   {
