@@ -36,7 +36,7 @@ const profile = {
   bio: "Michael Abbiw is a governance and transformational leadership expert with over 20 years of experience driving institutional excellence across Ghana's public and private sectors. He specializes in governance, strategy, risk management, and organizational transformation. He is the President of the Chartered Institute of Marketing, Ghana, and Chairman of its Governing Council, providing strategic leadership to advance professional standards and ethical practice. Michael also serves on several boards, including Built Financial Technologies Ltd., the e-Crime Bureau, and the Ghana Association of Savings and Loans Companies, and has previously served on the boards of Telecel Ghana and the Ghana Cylinder Manufacturing Company. A respected thought leader, trainer, and public speaker, Michael holds an MPhil in Entrepreneurship & Corporate Strategy and an MBA from KNUST, and is a Fellow of multiple professional institutions in leadership, governance, marketing, and education.",
   // Original: 1462×2048px JPEG. We serve a 800px-wide WebP instead — ~90% smaller.
   image: clImg(
-    "https://res.cloudinary.com/dshe5kflb/image/upload/v1778690125/368A9454-scaled-e1757589945396-1462x2048_vur7qk.jpg",
+    "https://res.cloudinary.com/dshe5kflb/image/upload/v1778761358/368A9454-scaled-e1757589945396-1462x2048_vur7qk_svc5j0.webp",
     "f_auto,q_auto,w_800",
   ),
   email: "m.abbiw@mgaconsultingltd.com",
@@ -206,14 +206,6 @@ export default function HomePage() {
 
       <div className="min-h-screen w-full bg-white md:bg-neutral-100 flex items-start md:items-center justify-center md:p-8">
         <div className="w-full md:max-w-[400px] bg-white md:rounded-[36px] md:shadow-2xl overflow-hidden relative min-h-screen md:min-h-0 ring-1 ring-black/5">
-          {/*
-            ── HERO IMAGE ────────────────────────────────────────────────────────
-            PERFORMANCE FIX — this is the LCP element:
-            • fetchPriority="high"  → browser loads this before anything else
-            • decoding="sync"       → no async decode delay on the critical path
-            • Cloudinary w_800      → ~90% smaller than original 1462px JPEG
-            • NO loading="lazy"     → never lazy-load the LCP element
-            ─────────────────────────────────────────────────────────────────── */}
           <div
             onClick={() => setIsExpanded(!isExpanded)}
             className={`
@@ -222,13 +214,11 @@ export default function HomePage() {
               ${isExpanded ? "h-[85vh] md:h-[600px]" : "h-[45vh] md:h-[400px]"}
             `}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={profile.image}
               alt={`Portrait of ${profile.name}`}
               width={800}
               height={1120}
-              // @ts-ignore — fetchPriority is valid HTML; TS types lag behind spec
               fetchPriority="high"
               decoding="sync"
               className="w-full h-full object-cover object-top"
