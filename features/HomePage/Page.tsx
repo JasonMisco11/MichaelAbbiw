@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import Link from "next/link";
 import {
   Download,
   ArrowRightLeft,
@@ -8,7 +9,6 @@ import {
   Mail,
   CheckCircle,
   Star,
-  ChevronRight,
   Briefcase,
   Maximize2,
   Minimize2,
@@ -16,6 +16,8 @@ import {
   Facebook,
   Instagram,
   Globe,
+  Check,
+  CircleCheck,
 } from "lucide-react";
 
 const profile = {
@@ -37,7 +39,7 @@ const profile = {
   },
 };
 
-const links = [
+export const links = [
   {
     title: "MGA Consulting Ltd",
     description:
@@ -82,99 +84,32 @@ const links = [
 
 export default function HomePage() {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (sliderRef.current) {
+      const scrollLeft = sliderRef.current.scrollLeft;
+      const itemWidth = 216; // 200px width + 16px gap
+      setActiveSlide(Math.round(scrollLeft / itemWidth));
+    }
+  };
+
+  const scrollToSlide = (index: number) => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollTo({
+        left: index * 216,
+        behavior: "smooth",
+      });
+      setActiveSlide(index);
+    }
+  };
 
   const handleCompanyProfile = () => {
-    const printWindow = window.open("", "_blank");
-    if (!printWindow) return alert("Please allow popups to view the profile.");
-
-    const content = `
-      <html>
-        <head>
-          <title>Company Profile - ${profile.name}</title>
-          <style>
-            body { font-family: 'Helvetica', 'Arial', sans-serif; padding: 40px; color: #333; line-height: 1.6; max-width: 800px; margin: 0 auto; }
-            .header { border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px; }
-            .header h1 { margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 1px; }
-            .header p { margin: 5px 0 0; color: #666; font-size: 14px; }
-            .section { margin-bottom: 30px; }
-            .section-title { font-size: 14px; font-weight: bold; text-transform: uppercase; color: #888; border-bottom: 1px solid #eee; margin-bottom: 15px; padding-bottom: 5px; }
-            .company { margin-bottom: 25px; }
-            .company h3 { margin: 0 0 5px; font-size: 18px; color: #000; }
-            .company .meta { font-size: 13px; color: #666; font-style: italic; margin-bottom: 8px; }
-            .footer { margin-top: 50px; font-size: 12px; text-align: center; color: #999; border-top: 1px solid #eee; padding-top: 20px; }
-            @media print {
-              body { padding: 0; }
-              button { display: none; }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h1>Michael Abbiw Corporate Portfolio</h1>
-            <p>Governance & Transformational Leadership Expert • ${profile.name}</p>
-          </div>
-
-          <div class="section">
-            <div class="section-title">Executive Summary</div>
-            <p>
-              A diversified portfolio of companies and professional services operating across governance consulting, real estate, technology solutions, logistics, and event management. Under the leadership of Michael Abbiw, these organizations deliver exceptional value and transformational excellence across Ghana's public and private sectors.
-            </p>
-          </div>
-
-          <div class="section">
-            <div class="section-title">Our Portfolio</div>
-            
-            <div class="company">
-              <h3>MGA Consulting Ltd</h3>
-              <div class="meta">Sector: Management Consulting & Governance</div>
-              <p>Specializing in governance, strategy, risk management, and organizational transformation to drive institutional excellence.</p>
-            </div>
-
-            <div class="company">
-              <h3>MGA Prime Properties</h3>
-              <div class="meta">Sector: Real Estate</div>
-              <p>Delivering premium real estate development and property management solutions.</p>
-            </div>
-
-            <div class="company">
-              <h3>Innosol Limited</h3>
-              <div class="meta">Sector: Technology & Innovation</div>
-              <p>Providing innovative business and technology solutions tailored to modern enterprise needs.</p>
-            </div>
-
-            <div class="company">
-              <h3>STIB Ghana</h3>
-              <div class="meta">Sector: Professional Services</div>
-              <p>Advancing professional standards and institutional excellence across various sectors.</p>
-            </div>
-
-            <div class="company">
-              <h3>JKA Logistics Limited</h3>
-              <div class="meta">Sector: Logistics & Supply Chain</div>
-              <p>Providing comprehensive end-to-end logistics and supply chain management solutions.</p>
-            </div>
-
-            <div class="company">
-              <h3>CorEvents Solutions Ltd</h3>
-              <div class="meta">Sector: Event Management</div>
-              <p>Specializing in comprehensive corporate event planning, coordination, and execution.</p>
-            </div>
-          </div>
-
-          <div class="footer">
-            <p>&copy; ${new Date().getFullYear()} Michael Abbiw Portfolio. All rights reserved.</p>
-            <p>Contact: ${profile.email}</p>
-          </div>
-          
-          <script>
-            window.onload = function() { window.print(); }
-          </script>
-        </body>
-      </html>
-    `;
-
-    printWindow.document.write(content);
-    printWindow.document.close();
+    window.open(
+      "https://drive.google.com/file/d/1JZXBMh6K1rXC6JPEXCOYaz9BH1Cx28ey/view?usp=sharing",
+      "_blank",
+    );
   };
 
   const handleEmail = () => {
@@ -182,21 +117,9 @@ export default function HomePage() {
   };
 
   const handleSaveContact = () => {
-    const vCardData = `BEGIN:VCARD
-VERSION:3.0
-FN:${profile.name}
-ORG:${profile.role}
-ADR:;;${profile.location}
-NOTE:${profile.bio}
-EMAIL:${profile.email}
-TEL:${profile.phone}
-URL:${profile.social.website}
-END:VCARD`;
-    const blob = new Blob([vCardData], { type: "text/vcard" });
-    const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", `${profile.name.replace(" ", "_")}.vcf`);
+    link.href = "/MichaelAbbiw.vcf";
+    link.setAttribute("download", "MichaelAbbiw.vcf");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -254,10 +177,7 @@ END:VCARD`;
             <div className="mb-8">
               <h1 className="text-[28px] font-extrabold text-black flex items-center gap-2 tracking-tight leading-none">
                 {profile.name}
-                <CheckCircle
-                  size={22}
-                  className="text-blue-500 fill-blue-500 text-white"
-                />
+                <CircleCheck color="#1c73d6" />
               </h1>
               <p className="text-xs font-semibold text-neutral-600 mt-2 mb-1">
                 {profile.qualifications}
@@ -298,14 +218,14 @@ END:VCARD`;
               <div className="flex gap-3">
                 <button
                   onClick={handleCompanyProfile}
-                  className="flex-1 border border-neutral-200 h-[52px] rounded-2xl text-sm font-semibold text-neutral-800 flex items-center justify-center gap-2.5 hover:bg-neutral-50 transition-colors active:bg-neutral-100"
+                  className="cursor-pointer flex-1 border border-neutral-200 h-[52px] rounded-2xl text-sm font-semibold text-neutral-800 flex items-center justify-center gap-2.5 hover:bg-neutral-50 transition-colors active:bg-neutral-100"
                 >
                   <FileText size={18} />
                   Profile
                 </button>
                 <button
                   onClick={handleEmail}
-                  className="flex-1 border border-neutral-200 h-[52px] rounded-2xl text-sm font-semibold text-neutral-800 flex items-center justify-center gap-2.5 hover:bg-neutral-50 transition-colors active:bg-neutral-100"
+                  className="cursor-pointer flex-1 border border-neutral-200 h-[52px] rounded-2xl text-sm font-semibold text-neutral-800 flex items-center justify-center gap-2.5 hover:bg-neutral-50 transition-colors active:bg-neutral-100"
                 >
                   <Mail size={18} />
                   Email Me
@@ -338,21 +258,20 @@ END:VCARD`;
             </div>
 
             <div className="relative">
-              <div className="flex items-center justify-between mb-4 cursor-pointer group">
-                <h3 className="font-bold text-black text-lg">Companies</h3>
-                <ChevronRight
-                  size={20}
-                  className="text-neutral-400 group-hover:translate-x-1 transition-transform"
-                />
-              </div>
-              <div className="flex overflow-x-auto gap-4 pb-8 -mx-6 px-6 scrollbar-hide snap-x snap-mandatory">
+              <h3 className="font-bold text-black text-lg">Companies</h3>
+
+              <div
+                ref={sliderRef}
+                onScroll={handleScroll}
+                className="flex overflow-x-auto gap-4 pb-8 -mx-6 px-6 scrollbar-hide snap-x snap-mandatory"
+              >
                 {links.map((link, idx) => (
                   <a
                     key={idx}
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-shrink-0 w-[200px] snap-start bg-white border border-neutral-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all active:scale-95 duration-200 group"
+                    className="shrink-0 w-[200px] snap-start bg-white border border-neutral-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all active:scale-95 duration-200 group"
                   >
                     <div className="h-32 w-full bg-neutral-100 relative overflow-hidden">
                       <img
@@ -375,10 +294,21 @@ END:VCARD`;
                   </a>
                 ))}
               </div>
-              <div className="flex justify-center gap-2 mt-[-15px]">
-                <div className="w-6 h-1.5 bg-black rounded-full" />
-                <div className="w-1.5 h-1.5 bg-neutral-200 rounded-full" />
-                <div className="w-1.5 h-1.5 bg-neutral-200 rounded-full" />
+              <div
+                className="flex justify-center gap-2 mt-[-15px]"
+                id="sliderDots"
+              >
+                {links.map((_, i) => (
+                  <div
+                    key={i}
+                    onClick={() => scrollToSlide(i)}
+                    className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                      activeSlide === i
+                        ? "w-6 bg-black"
+                        : "w-1.5 bg-neutral-200"
+                    }`}
+                  />
+                ))}
               </div>
             </div>
           </div>
