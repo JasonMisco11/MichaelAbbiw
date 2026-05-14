@@ -1,8 +1,5 @@
-import HomePage from '@/features/HomePage/Page'
-import React from 'react'
+import HomePage from "@/features/HomePage/Page";
 
 export default function page() {
-  return (
-    <HomePage />
-  )
+  return <HomePage />;
 }
