@@ -98,15 +98,6 @@ export const links = [
       "f_auto,q_auto,w_400",
     ),
   },
-  {
-    title: "JKA Logistics Limited",
-    description: "End-to-End Logistics & Supply Chain Solutions.",
-    image: clImg(
-      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694567/920666c9-2d1e-4c13-acb0-78506cc8aaaf_qwhtjs.png",
-      "f_auto,q_auto,w_400",
-    ),
-    url: "https://jkalogisticsltd.com/",
-  },
 
   {
     title: "CorEvents Solutions Ltd",
@@ -116,6 +107,15 @@ export const links = [
       "f_auto,q_auto,w_400",
     ),
     url: "https://coreventssolutionsltd.com/",
+  },
+  {
+    title: "JKA Logistics Limited",
+    description: "End-to-End Logistics & Supply Chain Solutions.",
+    image: clImg(
+      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694567/920666c9-2d1e-4c13-acb0-78506cc8aaaf_qwhtjs.png",
+      "f_auto,q_auto,w_400",
+    ),
+    url: "https://jkalogisticsltd.com/",
   },
 ];
 
