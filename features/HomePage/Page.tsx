@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import {
   Download,
   ArrowRightLeft,
@@ -16,13 +16,13 @@ import {
   Globe,
   Check,
   CircleCheck,
+  ChevronDown,
+  Smartphone,
+  Apple,
+  X,
 } from "lucide-react";
 
 // ─── Cloudinary helper ────────────────────────────────────────────────────────
-// Inserts Cloudinary transformations into any Cloudinary URL.
-// f_auto  → serve WebP/AVIF automatically
-// q_auto  → smart quality compression
-// w_{n}   → resize to needed width
 function clImg(url: string, transforms: string) {
   return url.replace("/upload/", `/upload/${transforms}/`);
 }
@@ -34,7 +34,6 @@ const profile = {
   role: "Governance & Transformational Leadership Expert",
   location: "Accra, Ghana",
   bio: "Michael Abbiw is a governance and transformational leadership expert with over 20 years of experience driving institutional excellence across Ghana's public and private sectors. He specializes in governance, strategy, risk management, and organizational transformation. He is the President of the Chartered Institute of Marketing, Ghana, and Chairman of its Governing Council, providing strategic leadership to advance professional standards and ethical practice. Michael also serves on several boards, including Built Financial Technologies Ltd., the e-Crime Bureau, and the Ghana Association of Savings and Loans Companies, and has previously served on the boards of Telecel Ghana and the Ghana Cylinder Manufacturing Company. A respected thought leader, trainer, and public speaker, Michael holds an MPhil in Entrepreneurship & Corporate Strategy and an MBA from KNUST, and is a Fellow of multiple professional institutions in leadership, governance, marketing, and education.",
-  // Original: 1462×2048px JPEG. We serve a 800px-wide WebP instead — ~90% smaller.
   image: clImg(
     "https://res.cloudinary.com/dshe5kflb/image/upload/v1778761358/368A9454-scaled-e1757589945396-1462x2048_vur7qk_svc5j0.webp",
     "f_auto,q_auto,w_800",
@@ -99,7 +98,6 @@ export const links = [
     ),
     url: "https://mgaconsultingltd.com/mga-consultinigeria/",
   },
-
   {
     title: "CorEvents Solutions Ltd",
     description: "Corporate event planning and management solutions.",
@@ -120,10 +118,269 @@ export const links = [
   },
 ];
 
+// ─── Step sub-component (used inside SaveContactButton) ───────────────────────
+function Step({ number, text }: { number: string; text: string }) {
+  return (
+    <div className="flex items-start gap-3">
+      <div
+        className="
+          flex h-7 w-7 shrink-0 items-center justify-center
+          rounded-full bg-black
+          text-xs font-bold text-white
+        "
+      >
+        {number}
+      </div>
+      <p className="pt-0.5 text-sm text-neutral-700">{text}</p>
+    </div>
+  );
+}
+
+// ─── SaveContactButton ────────────────────────────────────────────────────────
+function SaveContactButton() {
+  const [showSheet, setShowSheet] = useState(false);
+  const [hasSeenTutorial, setHasSeenTutorial] = useState(false);
+  const [isOpening, setIsOpening] = useState(false);
+
+  useEffect(() => {
+    const seen = sessionStorage.getItem("contactTutorialSeen");
+    setHasSeenTutorial(!!seen);
+  }, []);
+
+  const platform = useMemo(() => {
+    if (typeof navigator === "undefined") return "other";
+    const ua = navigator.userAgent;
+    if (/iPad|iPhone|iPod/.test(ua)) return "ios";
+    if (/Android/.test(ua)) return "android";
+    return "other";
+  }, []);
+
+  const openVCF = () => {
+    setIsOpening(true);
+
+    const link = document.createElement("a");
+    link.href = "/MichaelAbbiw.vcf";
+    link.setAttribute("download", "MichaelAbbiw.vcf");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setTimeout(() => {
+      setIsOpening(false);
+    }, 2000);
+  };
+
+  const handleSaveContact = () => {
+    if (!hasSeenTutorial) {
+      setShowSheet(true);
+      return;
+    }
+    openVCF();
+  };
+
+  const handleContinue = () => {
+    sessionStorage.setItem("contactTutorialSeen", "true");
+    setHasSeenTutorial(true);
+    setShowSheet(false);
+
+    setTimeout(() => {
+      openVCF();
+    }, 150);
+  };
+
+  return (
+    <>
+      {/* SAVE BUTTON */}
+      <button
+        onClick={handleSaveContact}
+        aria-label="Save contact"
+        className="
+          relative flex-1 h-[52px] rounded-2xl
+          bg-black text-white font-bold text-sm
+          flex items-center justify-center gap-2.5
+          shadow-lg shadow-black/20
+          transition-all duration-300
+          hover:bg-neutral-800
+          active:scale-[0.98]
+          save-btn-breathe
+        "
+      >
+        {isOpening ? (
+          <>
+            <Check size={18} strokeWidth={3} aria-hidden="true" />
+            Opening Contact...
+          </>
+        ) : (
+          <>
+            <Download size={18} strokeWidth={2.5} aria-hidden="true" />
+            Save contact
+          </>
+        )}
+      </button>
+
+      {/* BACKDROP */}
+      <div
+        className={`
+          fixed inset-0 z-40 bg-black/40 backdrop-blur-sm
+          transition-all duration-300
+          ${showSheet ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+        `}
+        onClick={() => setShowSheet(false)}
+      />
+
+      {/* BOTTOM SHEET */}
+      <div
+        className={`
+          fixed bottom-0 left-0 right-0 z-50
+          rounded-t-[32px]
+          bg-white
+          px-6 pt-4 pb-8
+          shadow-2xl
+          transition-all duration-300
+          ${showSheet ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}
+        `}
+      >
+        {/* HANDLE */}
+        <div className="flex justify-center mb-5">
+          <div className="h-1.5 w-14 rounded-full bg-neutral-300" />
+        </div>
+
+        {/* HEADER */}
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-bold text-neutral-900">Save Contact</h2>
+            <p className="mt-1 text-sm text-neutral-500">
+              Quick steps before your contact card opens.
+            </p>
+          </div>
+
+          <button
+            onClick={() => setShowSheet(false)}
+            aria-label="Close"
+            className="
+              flex h-9 w-9 items-center justify-center
+              rounded-full bg-neutral-100
+              text-neutral-600
+              transition hover:bg-neutral-200
+            "
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* PLATFORM CARD */}
+        <div className="mt-6 rounded-3xl border border-neutral-200 bg-neutral-50 p-5">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-black text-white">
+              {platform === "ios" ? (
+                <Apple size={20} aria-hidden="true" />
+              ) : (
+                <Smartphone size={20} aria-hidden="true" />
+              )}
+            </div>
+
+            <div>
+              <p className="font-semibold text-neutral-900">
+                {platform === "ios"
+                  ? "iPhone Instructions"
+                  : platform === "android"
+                    ? "Android Instructions"
+                    : "Device Instructions"}
+              </p>
+              <p className="text-sm text-neutral-500">
+                Follow these steps to save the contact.
+              </p>
+            </div>
+          </div>
+
+          {/* STEPS */}
+          <div className="mt-5 space-y-4">
+            {platform === "ios" && (
+              <>
+                <Step number="1" text="The contact preview will open" />
+                <Step
+                  number="2"
+                  text='Scroll down and tap "Create New Contact"'
+                />
+                <Step number="3" text='Tap "Done" to finish saving' />
+              </>
+            )}
+            {platform === "android" && (
+              <>
+                <Step number="1" text="The contact file will open" />
+                <Step number="2" text='Tap "Import" or "Save"' />
+                <Step number="3" text="Choose where to save the contact" />
+              </>
+            )}
+            {platform === "other" && (
+              <>
+                <Step number="1" text="The contact card will open" />
+                <Step
+                  number="2"
+                  text="Use your device options to save the contact"
+                />
+              </>
+            )}
+          </div>
+
+          {/* VISUAL HINT */}
+          <div className="mt-6 flex items-center justify-center gap-2 text-sm font-medium text-neutral-500">
+            <ChevronDown
+              className="animate-bounce"
+              size={18}
+              aria-hidden="true"
+            />
+            Scroll down after opening
+          </div>
+        </div>
+
+        {/* CTA */}
+        <button
+          onClick={handleContinue}
+          className="
+            mt-6 flex h-[54px] w-full items-center justify-center
+            rounded-2xl bg-black
+            font-semibold text-white
+            transition hover:bg-neutral-800
+            active:scale-[0.99]
+          "
+        >
+          Continue
+        </button>
+
+        <p className="mt-3 text-center text-xs text-neutral-400">
+          This tutorial only appears once per session.
+        </p>
+      </div>
+    </>
+  );
+}
+
+// ─── Accessible social button ─────────────────────────────────────────────────
+const SocialBtn = ({
+  icon,
+  href,
+  label,
+}: {
+  icon: React.ReactNode;
+  href: string;
+  label: string;
+}) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={label}
+    className="w-14 h-14 shrink-0 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-700 hover:bg-black hover:text-white hover:border-black transition-all active:scale-90 shadow-sm"
+  >
+    {icon}
+  </a>
+);
+
+// ─── HomePage ─────────────────────────────────────────────────────────────────
 export default function HomePage() {
   const [isExpanded, setIsExpanded] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [saved, setSaved] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = () => {
@@ -150,16 +407,6 @@ export default function HomePage() {
 
   const handleEmail = () => {
     window.location.href = `mailto:${profile.email}?subject=Inquiry from Digital Card`;
-  };
-
-  const handleSaveContact = () => {
-    const link = document.createElement("a");
-    link.href = "/MichaelAbbiw.vcf";
-    link.setAttribute("download", "MichaelAbbiw.vcf");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    setSaved(true);
   };
 
   const handleExchange = () => {
@@ -222,6 +469,7 @@ export default function HomePage() {
 
       <div className="min-h-screen w-full bg-white md:bg-neutral-100 flex items-start md:items-center justify-center md:p-8">
         <div className="w-full md:max-w-[400px] bg-white md:rounded-[36px] md:shadow-2xl overflow-hidden relative min-h-screen md:min-h-0 ring-1 ring-black/5">
+          {/* HERO IMAGE */}
           <div
             onClick={() => setIsExpanded(!isExpanded)}
             className={`
@@ -263,11 +511,12 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* CONTENT */}
           <div className="relative -mt-8 bg-white rounded-t-[36px] px-6 pt-10 pb-12 z-10 transition-transform duration-700">
             <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-neutral-200 rounded-full md:hidden" />
 
+            {/* NAME & ROLE */}
             <div className="mb-8">
-              {/* FIX: h1 instead of h1 (unchanged), h3 → h2 below for correct heading order */}
               <h1 className="text-[28px] font-extrabold text-black flex items-center gap-2 tracking-tight leading-none">
                 {profile.name}
                 <CircleCheck color="#1c73d6" aria-hidden="true" />
@@ -280,63 +529,25 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* ── SAVE CONTACT + CONNECT ──────────────────────────────────── */}
-            <div className="flex flex-col gap-2 mb-10">
-              <div className="flex gap-3">
-                <button
-                  onClick={handleSaveContact}
-                  disabled={saved}
-                  aria-label={saved ? "Contact saved" : "Save contact"}
-                  className={`
-                    relative flex-1 h-[52px] rounded-2xl font-bold text-sm
-                    flex items-center justify-center gap-2.5
-                    transition-all duration-500 overflow-hidden
-                    ${
-                      saved
-                        ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/30"
-                        : "bg-black text-white shadow-lg shadow-black/20 save-btn-breathe hover:bg-neutral-800"
-                    }
-                  `}
-                >
-                  {saved ? (
-                    <>
-                      <Check size={18} strokeWidth={3} aria-hidden="true" />
-                      Saved
-                    </>
-                  ) : (
-                    <>
-                      <Download
-                        size={18}
-                        strokeWidth={2.5}
-                        aria-hidden="true"
-                      />
-                      Save contact
-                    </>
-                  )}
-                </button>
+            {/* ── SAVE CONTACT + CONNECT ─────────────────────────────────── */}
+            <div className="flex gap-3 mb-10">
+              {/* SaveContactButton replaces the old inline save button */}
+              <SaveContactButton />
 
-                <button
-                  onClick={handleExchange}
-                  className="flex-1 bg-white border border-neutral-200 text-black h-[52px] rounded-2xl font-bold text-sm flex items-center justify-center gap-2.5 active:scale-95 transition-transform hover:bg-neutral-50 hover:scale-95"
-                >
-                  <ArrowRightLeft
-                    size={18}
-                    strokeWidth={2.5}
-                    aria-hidden="true"
-                  />
-                  Connect
-                </button>
-              </div>
-
-              <p
-                className={`text-center text-xs text-neutral-400 font-medium transition-all duration-500 ${
-                  saved ? "opacity-0 h-0 overflow-hidden" : "opacity-100"
-                }`}
+              <button
+                onClick={handleExchange}
+                className="flex-1 bg-white border border-neutral-200 text-black h-[52px] rounded-2xl font-bold text-sm flex items-center justify-center gap-2.5 active:scale-95 transition-transform hover:bg-neutral-50 hover:scale-95"
               >
-                Save now to keep Michael's details on your phone
-              </p>
+                <ArrowRightLeft
+                  size={18}
+                  strokeWidth={2.5}
+                  aria-hidden="true"
+                />
+                Connect
+              </button>
             </div>
 
+            {/* ABOUT */}
             <div className="mb-10">
               <h2 className="font-bold text-black text-lg mb-3">About</h2>
               <p className="text-neutral-600 text-[15px] leading-relaxed">
@@ -344,6 +555,7 @@ export default function HomePage() {
               </p>
             </div>
 
+            {/* QUICK ACTIONS */}
             <div className="mb-10">
               <h2 className="font-bold text-black text-lg mb-3">
                 Quick Actions
@@ -366,6 +578,7 @@ export default function HomePage() {
               </div>
             </div>
 
+            {/* SOCIAL */}
             <div className="mb-10">
               <h2 className="font-bold text-black text-lg mb-3">
                 Connect with Me
@@ -394,7 +607,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* ── COMPANIES SLIDER ─────────────────────────────────────────── */}
+            {/* COMPANIES SLIDER */}
             <div className="relative">
               <h2 className="font-bold text-black text-lg">Companies</h2>
 
@@ -413,11 +626,6 @@ export default function HomePage() {
                     className="shrink-0 w-[200px] snap-start bg-white border border-neutral-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all active:scale-95 duration-200 group"
                   >
                     <div className="h-32 w-full bg-neutral-100 relative overflow-hidden">
-                      {/*
-                        FIX: loading="lazy" + decoding="async" on ALL company images.
-                        They are below the fold — lazy loading them removes ~634 KiB
-                        from the initial page load.
-                      */}
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={link.image}
@@ -448,7 +656,6 @@ export default function HomePage() {
                 ))}
               </div>
 
-              {/* FIX: slider dots changed from <div> to <button> for accessibility */}
               <div className="flex justify-center gap-2 mt-[-15px]">
                 {links.map((_, i) => (
                   <button
@@ -470,24 +677,3 @@ export default function HomePage() {
     </>
   );
 }
-
-// ── Accessible social button ───────────────────────────────────────────────────
-const SocialBtn = ({
-  icon,
-  href,
-  label,
-}: {
-  icon: React.ReactNode;
-  href: string;
-  label: string;
-}) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label={label}
-    className="w-14 h-14 shrink-0 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-700 hover:bg-black hover:text-white hover:border-black transition-all active:scale-90 shadow-sm"
-  >
-    {icon}
-  </a>
-);
