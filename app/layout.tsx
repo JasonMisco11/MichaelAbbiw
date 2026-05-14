@@ -15,6 +15,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Michael Abbiw Portfolio",
   description: "FCIMG|FNIMN|FCILG|FCIET| FIoD, MPhil| PGDip| CM| ProM",
+  icons: {
+    icon: [
+      {
+        url: "https://res.cloudinary.com/dshe5kflb/image/upload/v1757589945/368A9454-scaled-e1757589945396_c2l30e.jpg",
+        sizes: "(max-width: 768px) 100vw, 33vw",
+        type: "image/jpeg",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
