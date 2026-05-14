@@ -58,6 +58,26 @@ export const links = [
       "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694568/7da8de98-fa8f-40a6-8c61-8623209756f8_pgwkxa.png",
       "f_auto,q_auto,w_400",
     ),
+    url: "https://mgaconsultingltd.com/",
+  },
+  {
+    title: "STIB Ghana",
+    description:
+      "Advancing professional standards and institutional excellence.",
+    image: clImg(
+      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694567/3431a504-0e73-4455-a6ed-a85dcc13985f_exzfyj.png",
+      "f_auto,q_auto,w_400",
+    ),
+    url: "https://stibghana.com/",
+  },
+  {
+    title: "Innosol Limited",
+    description: "Innovative business and technology solutions.",
+    image: clImg(
+      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694568/4a481e1d-7394-4d62-9ed9-bff007f4b9dd_rrilfx.png",
+      "f_auto,q_auto,w_400",
+    ),
+    url: "https://innosollimited.com/",
   },
   {
     title: "MGA Prime Properties",
@@ -67,21 +87,14 @@ export const links = [
       "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694568/75bdfdc3-caf2-48d2-b52a-79592570deb2_ntfild.png",
       "f_auto,q_auto,w_400",
     ),
+    url: "https://mgaprimeproperties.com/",
   },
   {
-    title: "Innosol Limited",
-    description: "Innovative business and technology solutions.",
-    image: clImg(
-      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694568/4a481e1d-7394-4d62-9ed9-bff007f4b9dd_rrilfx.png",
-      "f_auto,q_auto,w_400",
-    ),
-  },
-  {
-    title: "STIB Ghana",
+    title: "MGA Nigeria",
     description:
       "Advancing professional standards and institutional excellence.",
     image: clImg(
-      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694567/3431a504-0e73-4455-a6ed-a85dcc13985f_exzfyj.png",
+      "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694567/e135cefe-8357-456a-97f9-2bb5a77314e9_vdnkg8.png",
       "f_auto,q_auto,w_400",
     ),
   },
@@ -92,8 +105,9 @@ export const links = [
       "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694567/920666c9-2d1e-4c13-acb0-78506cc8aaaf_qwhtjs.png",
       "f_auto,q_auto,w_400",
     ),
-    url: "#",
+    url: "https://jkalogisticsltd.com/",
   },
+
   {
     title: "CorEvents Solutions Ltd",
     description: "Corporate event planning and management solutions.",
@@ -101,6 +115,7 @@ export const links = [
       "https://res.cloudinary.com/dshe5kflb/image/upload/v1778694568/6d3da7a3-f04d-49c4-953a-799fda233052_ma5elj.png",
       "f_auto,q_auto,w_400",
     ),
+    url: "https://coreventssolutionsltd.com/",
   },
 ];
 
